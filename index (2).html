@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Painel Multicanal - Modo Teams</title>
+<style>
+   :root{
+     --rd-dark:#0b3b2e;
+     --rd-soft:#e8f3ef;
+     --rd-accent:#2f8f5b;
+     --rd-border:#cfe3da;
+     --text:#17322a;
+     --muted:#61766f;
+     --shadow:0 6px 14px rgba(11,59,46,.08);
+     --nss:#6f42c1;
+   }
+   *{box-sizing:border-box}
+   body{
+     margin:0;
+     font-family:Segoe UI, Arial, sans-serif;
+     background:#eef5f1;
+     color:var(--text);
+   }
+   .app{
+     max-width:1440px;
+     margin:0 auto;
+     padding:12px;
+   }
+   .toolbar,.wrap{
+     background:#fff;
+     border:1px solid var(--rd-border);
+     border-radius:16px;
+     box-shadow:var(--shadow);
+   }
+   .toolbar{
+     display:flex;
+     justify-content:space-between;
+     align-items:center;
+     gap:12px;
+     padding:10px 14px;
+     margin-bottom:10px;
+     flex-wrap:wrap;
+   }
+   .brand{
+     display:flex;
+     align-items:center;
+     gap:10px;
+   }
+   .logo{
+     width:42px;
+     height:42px;
+     border-radius:12px;
+     background:linear-gradient(135deg,var(--rd-dark),var(--rd-accent));
+     color:#fff;
+     display:flex;
+     align-items:center;
+     justify-content:center;
+     font-weight:800;
+   }
+   h1{
+     margin:0;
+     font-size:18px;
+     color:var(--rd-dark);
+   }
+   .sub{
+     font-size:11px;
+     color:var(--muted);
+   }
+   .actions{
+     display:flex;
+     align-items:center;
+     gap:8px;
+     flex-wrap:wrap;
+   }
+   .chip,.tab{
+     padding:8px 11px;
+     border-radius:999px;
+     font-size:11px;
+     font-weight:700;
+   }
+   .chip{
+     background:var(--rd-soft);
+     border:1px solid var(--rd-border);
+     color:var(--rd-dark);
+   }
+   .btn{
+     border:none;
+     background:var(--rd-dark);
+     color:#fff;
+     border-radius:10px;
+     padding:9px 12px;
+     font-weight:700;
+     cursor:pointer;
+   }
+   .btn.w{
+     background:#fff;
+     color:var(--rd-dark);
+     border:1px solid var(--rd-border);
+   }
+   .tabs{
+     display:flex;
+     gap:8px;
+   }
+   .tab{
+     border:none;
+     background:var(--rd-soft);
+     color:var(--rd-dark);
+     cursor:pointer;
+   }
+   .tab.a{
+     background:var(--rd-dark);
+     color:#fff;
+   }
+   .p{display:none}
+   .p.a{display:block}
+   .wrap{
+     padding:10px;
+   }
+   .st{
+     display:flex;
+     justify-content:space-between;
+     align-items:center;
+     margin-bottom:8px;
+     gap:10px;
+     flex-wrap:wrap;
+   }
+   .st h2{
+     margin:0;
+     font-size:14px;
+   }
+   .st span{
+     font-size:10px;
+     color:var(--muted);
+   }
+   .cards{
+     display:grid;
+     grid-template-columns:repeat(6,1fr);
+     gap:8px;
+     margin-bottom:10px;
+   }
+   .card{
+     border:1px solid var(--rd-border);
+     border-radius:14px;
+     padding:8px;
+     background:linear-gradient(180deg,#fff 0%, #f8fcfa 100%);
+     min-height:150px;
+   }
+   .card.nss{
+     border-color:#dbc9ff;
+     background:linear-gradient(180deg,#fff 0%, #faf7ff 100%);
+   }
+   .n{
+     font-size:10px;
+     font-weight:800;
+     text-transform:uppercase;
+     color:var(--muted);
+     line-height:1.1;
+   }
+   .v{
+     font-size:26px;
+     font-weight:800;
+     color:var(--rd-dark);
+     margin:6px 0 4px;
+   }
+   .card.nss .v{
+     color:var(--nss);
+   }
+   .r{
+     display:flex;
+     justify-content:space-between;
+     gap:8px;
+     border-top:1px dashed #e9efec;
+     padding-top:3px;
+     margin-top:3px;
+     font-size:10px;
+   }
+   .r span:first-child{
+     color:var(--muted);
+     font-weight:600;
+   }
+   .r span:last-child{
+     font-weight:800;
+   }
+   .grid{
+     display:grid;
+     grid-template-columns:1.35fr .95fr;
+     gap:10px;
+   }
+   .left{
+     display:grid;
+     gap:10px;
+   }
+   .triple{
+     display:grid;
+     grid-template-columns:repeat(3,1fr);
+     gap:8px;
+   }
+   .double{
+     display:grid;
+     grid-template-columns:repeat(2,1fr);
+     gap:8px;
+   }
+   .ib{
+     border:1px solid var(--rd-border);
+     border-radius:14px;
+     overflow:hidden;
+     background:#fff;
+   }
+   .ibh{
+     background:var(--rd-soft);
+     padding:8px 10px;
+     font-size:11px;
+     font-weight:800;
+     border-bottom:1px solid var(--rd-border);
+   }
+   .ibb{
+     padding:8px;
+   }
+   .dw{
+     max-height:248px;
+     overflow:auto;
+   }
+   table{
+     width:100%;
+     border-collapse:collapse;
+     font-size:10px;
+   }
+   th,td{
+     padding:5px 6px;
+     border-bottom:1px solid #edf3f0;
+     white-space:nowrap;
+   }
+   th{
+     background:#fbfdfc;
+     color:var(--muted);
+     font-size:9px;
+     text-align:left;
+   }
+   td:nth-child(n+2),th:nth-child(n+2){
+     text-align:right;
+   }
+   .ibb table th:nth-child(2),
+   .ibb table th:nth-child(3),
+   .ibb table td:nth-child(2),
+   .ibb table td:nth-child(3){
+     text-align:right;
+   }
+   .cfgs{
+     display:grid;
+     grid-template-columns:repeat(2,1fr);
+     gap:10px;
+   }
+   .cfg{
+     border:1px solid var(--rd-border);
+     border-radius:14px;
+     padding:10px;
+     background:#fff;
+   }
+   .cfg.nss{
+     border-color:#dbc9ff;
+     background:#fcf9ff;
+   }
+   .cfg h3{
+     margin:0 0 8px;
+     font-size:14px;
+   }
+   .f{
+     display:grid;
+     grid-template-columns:repeat(2,1fr);
+     gap:8px;
+   }
+   label{
+     display:block;
+     font-size:10px;
+     color:var(--muted);
+     font-weight:700;
+     margin-bottom:4px;
+   }
+   input{
+     width:100%;
+     padding:8px 9px;
+     border:1px solid var(--rd-border);
+     border-radius:8px;
+     background:#fbfdfc;
+   }
+   .sm{
+     margin-top:8px;
+     border:1px solid var(--rd-border);
+     border-radius:10px;
+     overflow:auto;
+   }
+   .note{
+     font-size:10px;
+     color:var(--muted);
+     margin-top:6px;
+   }
+   @media print{
+     body{background:#fff}
+     .btn,.tabs{display:none!important}
+     .app{max-width:none;padding:0}
+     .box,.bar{box-shadow:none}
+   }
+   @media (max-width:1200px){
+     .cards{grid-template-columns:repeat(3,1fr)}
+     .grid,.triple,.double,.cfgs,.f{grid-template-columns:1fr}
+   }
+</style>
+</head>
+<body>
+<div class="app">
+<div class="toolbar">
+<div class="brand">
+<div class="logo">RD</div>
+<div>
+<h1>Painel Multicanal - REPORT</h1>
+<div class="sub">Compacto para compartilhamento</div>
+</div>
+</div>
+<div class="actions">
+<div class="chip" id="ref">Base do dado: D-1</div>
+<button class="btn" id="excelBtn">Exportar Excel RD</button>
+<button class="btn w" id="printBtn">Imprimir / PDF</button>
+<div class="tabs">
+<button class="tab a" data-t="view">Painel</button>
+<button class="tab" data-t="cfg">Configuração</button>
+</div>
+</div>
+</div>
+<section id="view" class="p a">
+<div class="wrap">
+<div class="st">
+<h2>REPORT EFICIÊNCIA - %OT SEP. MARÇO</h2>
+<span>Formato compacto</span>
+</div>
+<div class="cards" id="cards"></div>
+<div class="grid">
+<div class="left">
+<div class="triple">
+<div class="ib">
+<div class="ibh">Top 5 Cidades Ofensoras</div>
+<table id="cities"></table>
+</div>
+<div class="ib">
+<div class="ibh">Top 5 Regionais Ofensoras</div>
+<table id="regs"></table>
+</div>
+<div class="ib">
+<div class="ibh">Top 5 Filiais Ofensoras</div>
+<table id="stores"></table>
+</div>
+</div>
+<div class="double">
+<div class="ib">
+<div class="ibh">Dados Gerais</div>
+<div class="ibb">
+<table id="geralTable"></table>
+</div>
+</div>
+<div class="ib">
+<div class="ibh">Perdas</div>
+<div class="ibb">
+<table id="perdasTable"></table>
+</div>
+</div>
+</div>
+</div>
+<div class="ib">
+<div class="ibh">Dados por Dia - %OT sep</div>
+<div class="dw">
+<table id="daily"></table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="cfg" class="p">
+<div class="wrap">
+<div class="st">
+<h2>Configuração</h2>
+<span id="save">Dados salvos localmente</span>
+</div>
+<div class="cfgs" id="serviceCfgs"></div>
+<div class="cfgs" style="margin-top:10px">
+<div class="cfg">
+<h3>Cidades</h3>
+<div class="sm" id="citiesEd"></div>
+</div>
+<div class="cfg">
+<h3>Regionais</h3>
+<div class="sm" id="regsEd"></div>
+</div>
+<div class="cfg">
+<h3>Filiais</h3>
+<div class="sm" id="storesEd"></div>
+</div>
+<div class="cfg">
+<h3>Dados Gerais e Perdas</h3>
+<div class="f">
+<div>
+<label>Pedidos de transbordo</label>
+<input type="number" id="trans">
+</div>
+<div>
+<label>Valor transbordo R$</label>
+<input type="number" id="transVal" step="0.01">
+</div>
+<div>
+<label>Prateleira infinita</label>
+<input type="number" id="prat">
+</div>
+<div>
+<label>Valor prateleira infinita R$</label>
+<input type="number" id="pratVal" step="0.01">
+</div>
+<div>
+<label>Pedidos cancelados</label>
+<input type="number" id="can">
+</div>
+<div>
+<label>Valor cancelados R$</label>
+<input type="number" id="canVal" step="0.01">
+</div>
+<div>
+<label>Devolvidos ND</label>
+<input type="number" id="dev">
+</div>
+<div>
+<label>Valor devolvidos ND R$</label>
+<input type="number" id="devVal" step="0.01">
+</div>
+<div>
+<label>Aguardando ND</label>
+<input type="number" id="agu">
+</div>
+<div>
+<label>Valor aguardando ND R$</label>
+<input type="number" id="aguVal" step="0.01">
+</div>
+</div>
+</div>
+<div class="cfg">
+<h3>Registro por Dia</h3>
+<div class="f">
+<div>
+<label>Data</label>
+<input type="date" id="dDate">
+</div>
+<div>
+<label>Pedidos</label>
+<input type="number" id="dOrders">
+</div>
+<div>
+<label>Fora prazo</label>
+<input type="number" id="dLate">
+</div>
+<div>
+<label>OnTime %</label>
+<input type="number" id="dOt" min="0" max="100" step="0.1">
+</div>
+</div>
+<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn" id="saveDay">Salvar dia</button>
+<button class="btn w" id="clearDay">Limpar dias</button>
+<button class="btn w" id="backupBtn">Exportar backup JSON</button>
+<label class="btn w" style="display:inline-flex;align-items:center;">
+             Importar backup
+<input type="file" id="imp" accept=".json" style="display:none">
+</label>
+<button class="btn w" id="resetBtn">Resetar</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script>
+const S = [
+ {k:"e60",  n:"Entrega 60 min",      t:"o"},
+ {k:"e120", n:"Entrega 120 min",     t:"o"},
+ {k:"e4h",  n:"Entrega 4h",          t:"o"},
+ {k:"d1",   n:"D+1",                 t:"o"},
+ {k:"ag",   n:"Agendada",            t:"o"},
+ {k:"cr",   n:"NSS Compre & Retire", t:"n"}
+];
+const KEY = "rd_painel_teams_excel_v3";
+const blank = l => Array.from({length:5}, (_,i)=>({
+ name:l+" "+(i+1),
+ orders:0,
+ late:0,
+ metric:0
+}));
+const def = ()=>{
+ const sv = {};
+ S.forEach(s=>{
+   sv[s.k] = s.t === "n"
+     ? {
+         big:0,
+         totalOrders:0,
+         lockerOrders:0,
+         insertedLocker:0,
+         gt7NoLow:0
+       }
+     : {
+         big:0,
+         totalOrders:0,
+         ontimeOrders:0,
+         above30:0,
+         above15:0
+       };
+ });
+ return {
+   refDate:"",
+   services:sv,
+   cities:blank("Cidade"),
+   regs:blank("Regional"),
+   stores:blank("Filial"),
+   general:{
+     trans:0,
+     transVal:0,
+     prat:0,
+     pratVal:0
+   },
+   loss:{
+     can:0,
+     canVal:0,
+     dev:0,
+     devVal:0,
+     agu:0,
+     aguVal:0
+   },
+   daily:[]
+ };
+};
+const merge = r=>{
+ let b = def();
+ if(!r || typeof r !== "object") return b;
+ b.refDate = r.refDate || "";
+ if(r.services){
+   S.forEach(s=>{
+     const x = r.services[s.k] || {};
+     b.services[s.k] = s.t === "n"
+       ? {
+           big:+(x.big||0),
+           totalOrders:+(x.totalOrders||0),
+           lockerOrders:+(x.lockerOrders||0),
+           insertedLocker:+(x.insertedLocker||0),
+           gt7NoLow:+(x.gt7NoLow||0)
+         }
+       : {
+           big:+(x.big||0),
+           totalOrders:+(x.totalOrders||0),
+           ontimeOrders:+(x.ontimeOrders||0),
+           above30:+(x.above30||0),
+           above15:+(x.above15||0)
+         };
+   });
+ }
+ ["cities","regs","stores"].forEach(k=>{
+   if(Array.isArray(r[k])){
+     b[k] = r[k].slice(0,5).map(x=>({
+       name:x.name||"",
+       orders:+(x.orders||0),
+       late:+(x.late||0),
+       metric:+(x.metric||0)
+     }));
+     while(b[k].length<5){
+       b[k].push({name:"",orders:0,late:0,metric:0});
+     }
+   }
+ });
+ b.general = {
+   trans:+((r.general||{}).trans||0),
+   transVal:+((r.general||{}).transVal||0),
+   prat:+((r.general||{}).prat||0),
+   pratVal:+((r.general||{}).pratVal||0)
+ };
+ b.loss = {
+   can:+((r.loss||{}).can||0),
+   canVal:+((r.loss||{}).canVal||0),
+   dev:+((r.loss||{}).dev||0),
+   devVal:+((r.loss||{}).devVal||0),
+   agu:+((r.loss||{}).agu||0),
+   aguVal:+((r.loss||{}).aguVal||0)
+ };
+ b.daily = Array.isArray(r.daily) ? r.daily : [];
+ return b;
+};
+let st = (()=> {
+ try{
+   const r = localStorage.getItem(KEY);
+   return r ? merge(JSON.parse(r)) : def();
+ }catch(e){
+   return def();
+ }
+})();
+const save = ()=>{
+ localStorage.setItem(KEY, JSON.stringify(st));
+ document.getElementById("save").textContent = "Dados salvos localmente";
+};
+const n = v => Number(v||0).toLocaleString("pt-BR");
+const p = v => Number(v||0).toLocaleString("pt-BR", {
+ minimumFractionDigits:1,
+ maximumFractionDigits:1
+}) + "%";
+const money = v => Number(v||0).toLocaleString("pt-BR", {
+ minimumFractionDigits:2,
+ maximumFractionDigits:2
+});
+const esc = t => String(t)
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;");
+document.querySelectorAll(".tab").forEach(b=>{
+ b.onclick = ()=>{
+   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("a"));
+   document.querySelectorAll(".p").forEach(x=>x.classList.remove("a"));
+   b.classList.add("a");
+   document.getElementById(b.dataset.t).classList.add("a");
+ };
+});
+function svcCfg(s){
+ return s.t === "n"
+   ? `<div class="cfg nss">
+<h3>${s.n}</h3>
+<div class="f">
+<div><label>NSS %</label><input type="number" min="0" max="100" step="0.1" data-s="${s.k}" data-c="big"></div>
+<div><label>Quantidade total</label><input type="number" data-s="${s.k}" data-c="totalOrders"></div>
+<div><label>Pedidos de locker</label><input type="number" data-s="${s.k}" data-c="lockerOrders"></div>
+<div><label>Inseridos no locker</label><input type="number" data-s="${s.k}" data-c="insertedLocker"></div>
+<div><label>&gt; 7 dias sem baixa</label><input type="number" data-s="${s.k}" data-c="gt7NoLow"></div>
+</div>
+</div>`
+   : `<div class="cfg">
+<h3>${s.n}</h3>
+<div class="f">
+<div><label>OnTime %</label><input type="number" min="0" max="100" step="0.1" data-s="${s.k}" data-c="big"></div>
+<div><label>Quantidade total</label><input type="number" data-s="${s.k}" data-c="totalOrders"></div>
+<div><label>Pedidos no prazo</label><input type="number" data-s="${s.k}" data-c="ontimeOrders"></div>
+<div><label>Acima de 30 min</label><input type="number" data-s="${s.k}" data-c="above30"></div>
+<div><label>Acima de 15 min</label><input type="number" data-s="${s.k}" data-c="above15"></div>
+</div>
+</div>`;
+}
+function topEdit(id,label){
+ const rows = st[id];
+ return `
+<table>
+<thead>
+<tr>
+<th>${label}</th>
+<th>Pedidos</th>
+<th>Fora prazo</th>
+<th>OT %</th>
+</tr>
+</thead>
+<tbody>
+       ${rows.map((r,i)=>`
+<tr>
+<td><input data-id="${id}" data-i="${i}" data-c="name" value="${esc(r.name)}"></td>
+<td><input type="number" data-id="${id}" data-i="${i}" data-c="orders" value="${r.orders}"></td>
+<td><input type="number" data-id="${id}" data-i="${i}" data-c="late" value="${r.late}"></td>
+<td><input type="number" min="0" max="100" step="0.1" data-id="${id}" data-i="${i}" data-c="metric" value="${r.metric}"></td>
+</tr>
+       `).join("")}
+</tbody>
+</table>
+ `;
+}
+function renderCfg(){
+ document.getElementById("serviceCfgs").innerHTML = S.map(svcCfg).join("");
+ S.forEach(s=>{
+   Object.keys(st.services[s.k]).forEach(c=>{
+     const el = document.querySelector(`[data-s="${s.k}"][data-c="${c}"]`);
+     if(el) el.value = st.services[s.k][c];
+   });
+ });
+ document.getElementById("citiesEd").innerHTML = topEdit("cities","Cidade");
+ document.getElementById("regsEd").innerHTML = topEdit("regs","Regional");
+ document.getElementById("storesEd").innerHTML = topEdit("stores","Filial");
+ document.getElementById("trans").value = st.general.trans;
+ document.getElementById("transVal").value = st.general.transVal;
+ document.getElementById("prat").value = st.general.prat;
+ document.getElementById("pratVal").value = st.general.pratVal;
+ document.getElementById("can").value = st.loss.can;
+ document.getElementById("canVal").value = st.loss.canVal;
+ document.getElementById("dev").value = st.loss.dev;
+ document.getElementById("devVal").value = st.loss.devVal;
+ document.getElementById("agu").value = st.loss.agu;
+ document.getElementById("aguVal").value = st.loss.aguVal;
+ document.getElementById("dDate").value = st.refDate || new Date(Date.now()-86400000).toISOString().slice(0,10);
+ document.querySelectorAll("[data-s]").forEach(el=>{
+   el.oninput = e=>{
+     st.services[e.target.dataset.s][e.target.dataset.c] = Number(e.target.value||0);
+     save();
+     renderView();
+   };
+ });
+ document.querySelectorAll("[data-id]").forEach(el=>{
+   el.oninput = e=>{
+     const id = e.target.dataset.id;
+     const i = +e.target.dataset.i;
+     const c = e.target.dataset.c;
+     st[id][i][c] = c === "name" ? e.target.value : Number(e.target.value||0);
+     save();
+     renderView();
+   };
+ });
+ [
+   "trans","transVal","prat","pratVal",
+   "can","canVal","dev","devVal","agu","aguVal"
+ ].forEach(id=>{
+   document.getElementById(id).oninput = ()=>{
+     st.general.trans = +document.getElementById("trans").value || 0;
+     st.general.transVal = +document.getElementById("transVal").value || 0;
+     st.general.prat = +document.getElementById("prat").value || 0;
+     st.general.pratVal = +document.getElementById("pratVal").value || 0;
+     st.loss.can = +document.getElementById("can").value || 0;
+     st.loss.canVal = +document.getElementById("canVal").value || 0;
+     st.loss.dev = +document.getElementById("dev").value || 0;
+     st.loss.devVal = +document.getElementById("devVal").value || 0;
+     st.loss.agu = +document.getElementById("agu").value || 0;
+     st.loss.aguVal = +document.getElementById("aguVal").value || 0;
+     save();
+     renderView();
+   };
+ });
+}
+function cards(){
+ document.getElementById("cards").innerHTML = S.map(s=>{
+   const d = st.services[s.k];
+   return s.t === "n"
+     ? `<div class="card nss">
+<div class="n">${s.n}</div>
+<div class="v">${p(d.big)}</div>
+<div class="r"><span>Quantidade total</span><span>${n(d.totalOrders)}</span></div>
+<div class="r"><span>Pedidos locker</span><span>${n(d.lockerOrders)}</span></div>
+<div class="r"><span>Inseridos no locker</span><span>${n(d.insertedLocker)}</span></div>
+<div class="r"><span>&gt; 7 dias sem baixa</span><span>${n(d.gt7NoLow)}</span></div>
+</div>`
+     : `<div class="card">
+<div class="n">${s.n}</div>
+<div class="v">${p(d.big)}</div>
+<div class="r"><span>Quantidade total</span><span>${n(d.totalOrders)}</span></div>
+<div class="r"><span>Pedidos no prazo</span><span>${n(d.ontimeOrders)}</span></div>
+<div class="r"><span>Acima de 30 min</span><span>${n(d.above30)}</span></div>
+<div class="r"><span>Acima de 15 min</span><span>${n(d.above15)}</span></div>
+</div>`;
+ }).join("");
+}
+function tbl(rows,label){
+ return `
+<thead>
+<tr>
+<th>${label}</th>
+<th>Pedidos</th>
+<th>Fora prazo</th>
+<th>OT %</th>
+</tr>
+</thead>
+<tbody>
+     ${rows.map(r=>`
+<tr>
+<td>${esc(r.name||"-")}</td>
+<td>${n(r.orders)}</td>
+<td>${n(r.late)}</td>
+<td>${p(r.metric)}</td>
+</tr>
+     `).join("")}
+</tbody>
+ `;
+}
+function renderView(){
+ const d = st.refDate || new Date(Date.now()-86400000).toISOString().slice(0,10);
+ const a = d.split("-");
+ document.getElementById("ref").textContent = `Base do dado: ${a[2]}/${a[1]}/${a[0]} (D-1)`;
+ cards();
+ document.getElementById("cities").innerHTML = tbl(st.cities,"Cidade");
+ document.getElementById("regs").innerHTML = tbl(st.regs,"Regional");
+ document.getElementById("stores").innerHTML = tbl(st.stores,"Filial");
+ document.getElementById("geralTable").innerHTML = `
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Qtd</th>
+<th>Valor R$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pedidos de transbordo</td>
+<td>${n(st.general.trans)}</td>
+<td>${money(st.general.transVal)}</td>
+</tr>
+<tr>
+<td>Prateleira infinita</td>
+<td>${n(st.general.prat)}</td>
+<td>${money(st.general.pratVal)}</td>
+</tr>
+</tbody>
+ `;
+ document.getElementById("perdasTable").innerHTML = `
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Qtd</th>
+<th>Valor R$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pedidos cancelados</td>
+<td>${n(st.loss.can)}</td>
+<td>${money(st.loss.canVal)}</td>
+</tr>
+<tr>
+<td>Devolvidos ND</td>
+<td>${n(st.loss.dev)}</td>
+<td>${money(st.loss.devVal)}</td>
+</tr>
+<tr>
+<td>Aguardando ND</td>
+<td>${n(st.loss.agu)}</td>
+<td>${money(st.loss.aguVal)}</td>
+</tr>
+</tbody>
+ `;
+ const rows = st.daily.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ document.getElementById("daily").innerHTML = `
+<thead>
+<tr>
+<th>Dia</th>
+<th>Pedidos</th>
+<th>Fora prazo</th>
+<th>OT %</th>
+</tr>
+</thead>
+<tbody>
+     ${rows.length
+       ? rows.map(r=>`
+<tr>
+<td>${esc(r.date.slice(-2))}</td>
+<td>${n(r.orders)}</td>
+<td>${n(r.late)}</td>
+<td>${p(r.ontime)}</td>
+</tr>
+       `).join("")
+       : `<tr><td colspan="4" style="text-align:center;color:#61766f;">Sem dados salvos</td></tr>`
+     }
+</tbody>
+ `;
+}
+document.getElementById("saveDay").onclick = ()=>{
+ const date = document.getElementById("dDate").value;
+ const orders = +document.getElementById("dOrders").value || 0;
+ const late = +document.getElementById("dLate").value || 0;
+ const ontime = +document.getElementById("dOt").value || 0;
+ if(!date) return alert("Preencha a data.");
+ st.refDate = date;
+ const idx = st.daily.findIndex(r=>r.date===date);
+ const payload = {date,orders,late,ontime};
+ if(idx>=0) st.daily[idx] = payload;
+ else st.daily.push(payload);
+ save();
+ renderView();
+ document.getElementById("dOrders").value = "";
+ document.getElementById("dLate").value = "";
+ document.getElementById("dOt").value = "";
+};
+document.getElementById("clearDay").onclick = ()=>{
+ if(confirm("Deseja limpar todos os dados por dia?")){
+   st.daily = [];
+   save();
+   renderView();
+ }
+};
+document.getElementById("backupBtn").onclick = ()=>{
+ const blob = new Blob([JSON.stringify(st,null,2)], {type:"application/json"});
+ const a = document.createElement("a");
+ a.href = URL.createObjectURL(blob);
+ a.download = "backup_painel_multicanal.json";
+ a.click();
+ URL.revokeObjectURL(a.href);
+};
+document.getElementById("imp").onchange = async (e)=>{
+ const f = e.target.files[0];
+ if(!f) return;
+ try{
+   st = merge(JSON.parse(await f.text()));
+   save();
+   renderCfg();
+   renderView();
+ }catch(err){
+   alert("Arquivo inválido.");
+ }
+ e.target.value = "";
+};
+document.getElementById("resetBtn").onclick = ()=>{
+ if(confirm("Deseja resetar todo o painel?")){
+   st = def();
+   save();
+   renderCfg();
+   renderView();
+ }
+};
+document.getElementById("printBtn").onclick = ()=> window.print();
+function xEsc(s){
+ return String(s ?? "")
+   .replaceAll("&","&amp;")
+   .replaceAll("<","&lt;")
+   .replaceAll(">","&gt;");
+}
+function c(v,style="",type="String"){
+ return `<Cell${style ? ` ss:StyleID="${style}"` : ""}><Data ss:Type="${type}">${xEsc(v)}</Data></Cell>`;
+}
+function rw(arr){
+ return `<Row>${arr.join("")}</Row>`;
+}
+function buildXls(){
+ const d = st.refDate || new Date(Date.now()-86400000).toISOString().slice(0,10);
+ const a = d.split("-");
+ const ref = `${a[2]}/${a[1]}/${a[0]} (D-1)`;
+ let rows = [];
+ rows.push(rw([
+   c("PAINEL MULTICANAL - MODO TEAMS","Title"),
+   c(""), c(""), c(""), c(""), c(""), c(""), c(""),
+   c("BASE DO DADO","HG"),
+   c(ref,"HG")
+ ]));
+ rows.push(rw([]));
+ rows.push(rw([
+   c("Serviço","HG"),
+   c("Indicador","HG"),
+   c("Qtd Total","HG"),
+   c("No Prazo","HG"),
+   c("Acima 30","HG"),
+   c("Acima 15","HG"),
+   c("Locker","HP"),
+   c("Inseridos locker","HP"),
+   c("> 7 dias sem baixa","HP")
+ ]));
+ S.forEach(s=>{
+   const d = st.services[s.k];
+   rows.push(
+     s.t === "n"
+       ? rw([
+           c(s.n,"L"),
+           c(p(d.big),"VP"),
+           c(n(d.totalOrders),"N"),
+           c("-","N"),
+           c("-","N"),
+           c("-","N"),
+           c(n(d.lockerOrders),"N"),
+           c(n(d.insertedLocker),"N"),
+           c(n(d.gt7NoLow),"N")
+         ])
+       : rw([
+           c(s.n,"L"),
+           c(p(d.big),"VG"),
+           c(n(d.totalOrders),"N"),
+           c(n(d.ontimeOrders),"N"),
+           c(n(d.above30),"N"),
+           c(n(d.above15),"N"),
+           c("-","N"),
+           c("-","N"),
+           c("-","N")
+         ])
+   );
+ });
+ rows.push(rw([]));
+ function sec(title,label,arr){
+   rows.push(rw([c(title,"SEC")]));
+   rows.push(rw([
+     c(label,"HG"),
+     c("Pedidos","HG"),
+     c("Fora prazo","HG"),
+     c("OT %","HG")
+   ]));
+   arr.forEach(r=>{
+     rows.push(rw([
+       c(r.name||"-","L"),
+       c(n(r.orders),"N"),
+       c(n(r.late),"N"),
+       c(p(r.metric),"N")
+     ]));
+   });
+   rows.push(rw([]));
+ }
+ sec("TOP 5 CIDADES OFENSORAS","Cidade",st.cities);
+ sec("TOP 5 REGIONAIS OFENSORAS","Regional",st.regs);
+ sec("TOP 5 FILIAIS OFENSORAS","Filial",st.stores);
+ rows.push(rw([c("DADOS GERAIS","SEC")]));
+ rows.push(rw([c("Indicador","HG"), c("Qtd","HG"), c("Valor R$","HG")]));
+ rows.push(rw([c("Pedidos de transbordo","L"), c(n(st.general.trans),"N"), c(money(st.general.transVal),"N")]));
+ rows.push(rw([c("Prateleira infinita","L"), c(n(st.general.prat),"N"), c(money(st.general.pratVal),"N")]));
+ rows.push(rw([]));
+ rows.push(rw([c("PERDAS","SEC")]));
+ rows.push(rw([c("Indicador","HG"), c("Qtd","HG"), c("Valor R$","HG")]));
+ rows.push(rw([c("Pedidos cancelados","L"), c(n(st.loss.can),"N"), c(money(st.loss.canVal),"N")]));
+ rows.push(rw([c("Devolvidos ND","L"), c(n(st.loss.dev),"N"), c(money(st.loss.devVal),"N")]));
+ rows.push(rw([c("Aguardando ND","L"), c(n(st.loss.agu),"N"), c(money(st.loss.aguVal),"N")]));
+ rows.push(rw([]));
+ rows.push(rw([c("DADOS POR DIA","SEC")]));
+ rows.push(rw([
+   c("Dia","HG"),
+   c("Pedidos","HG"),
+   c("Fora prazo","HG"),
+   c("OT %","HG")
+ ]));
+ st.daily.slice().sort((a,b)=>String(a.date).localeCompare(String(b.date))).forEach(r=>{
+   rows.push(rw([
+     c(r.date.slice(-2),"L"),
+     c(n(r.orders),"N"),
+     c(n(r.late),"N"),
+     c(p(r.ontime),"N")
+   ]));
+ });
+ return `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+<Styles>
+<Style ss:ID="Title">
+<Font ss:FontName="Segoe UI" ss:Size="14" ss:Bold="1" ss:Color="#0B3B2E"/>
+</Style>
+<Style ss:ID="SEC">
+<Font ss:FontName="Segoe UI" ss:Size="11" ss:Bold="1" ss:Color="#0B3B2E"/>
+<Interior ss:Color="#E8F3EF" ss:Pattern="Solid"/>
+</Style>
+<Style ss:ID="HG">
+<Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1" ss:Color="#FFFFFF"/>
+<Interior ss:Color="#0B3B2E" ss:Pattern="Solid"/>
+</Style>
+<Style ss:ID="HP">
+<Font ss:FontName="Segoe UI" ss:Size="10" ss:Bold="1" ss:Color="#FFFFFF"/>
+<Interior ss:Color="#6F42C1" ss:Pattern="Solid"/>
+</Style>
+<Style ss:ID="L">
+<Font ss:FontName="Segoe UI" ss:Size="10" ss:Color="#17322A"/>
+</Style>
+<Style ss:ID="VG">
+<Font ss:FontName="Segoe UI" ss:Size="11" ss:Bold="1" ss:Color="#0B3B2E"/>
+<Interior ss:Color="#F8FCFA" ss:Pattern="Solid"/>
+</Style>
+<Style ss:ID="VP">
+<Font ss:FontName="Segoe UI" ss:Size="11" ss:Bold="1" ss:Color="#6F42C1"/>
+<Interior ss:Color="#FAF7FF" ss:Pattern="Solid"/>
+</Style>
+<Style ss:ID="N">
+<Alignment ss:Horizontal="Right"/>
+<Font ss:FontName="Segoe UI" ss:Size="10"/>
+</Style>
+</Styles>
+<Worksheet ss:Name="Painel RD">
+<Table>
+<Column ss:Width="170"/>
+<Column ss:Width="100"/>
+<Column ss:Width="90"/>
+<Column ss:Width="90"/>
+<Column ss:Width="90"/>
+<Column ss:Width="90"/>
+<Column ss:Width="90"/>
+<Column ss:Width="110"/>
+<Column ss:Width="120"/>
+     ${rows.join("")}
+</Table>
+</Worksheet>
+</Workbook>`;
+}
+document.getElementById("excelBtn").onclick = ()=>{
+ const blob = new Blob([buildXls()], {type:"application/vnd.ms-excel"});
+ const a = document.createElement("a");
+ a.href = URL.createObjectURL(blob);
+ a.download = "painel_multicanal_rd.xls";
+ a.click();
+ URL.revokeObjectURL(a.href);
+};
+renderCfg();
+renderView();
+</script>
+</body>
+</html>
